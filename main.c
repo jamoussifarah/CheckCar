@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 // Inclusion des fichiers de structure
 #include <locale.h>
@@ -48,6 +47,26 @@ int main() {
         printf("Kilometrage : ");
         scanf("%d", &currentInspection->vehicule->kilometrage);
 
+        // Allocation mémoire pour le client
+        currentInspection->vehicule->proprietaire = (CLIENT*)malloc(sizeof(CLIENT));
+        if (currentInspection->vehicule->proprietaire == NULL) {
+            printf("Échec de l'allocation mémoire pour le client.\n");
+            free(inspections);  // Libération mémoire en cas d'erreur
+            return 1;
+        }
+
+        // Saisie des informations du client
+        printf("Nom du client : ");
+        scanf("%s", currentInspection->vehicule->proprietaire->nom);
+        printf("Prenom du client : ");
+        scanf("%s", currentInspection->vehicule->proprietaire->prenom);
+        printf("Email du client : ");
+        scanf("%s", currentInspection->vehicule->proprietaire->email);
+        printf("Telephone du client : ");
+        scanf("%s", &currentInspection->vehicule->proprietaire->telephone);
+        printf("Ville du client : ");
+        scanf("%s", &currentInspection->vehicule->proprietaire->ville);
+
         // Allocation mémoire pour le technicien
         currentInspection->technicien = (TECHNICIEN*)malloc(sizeof(TECHNICIEN));
         if (currentInspection->technicien == NULL) {
@@ -60,7 +79,7 @@ int main() {
         // Saisie des informations du technicien
         printf("Nom du technicien : ");
         scanf("%s", currentInspection->technicien->nom);
-        printf("Prenom du technicien :");
+        printf("Prenom du technicien:\n");
         scanf("%s", currentInspection->technicien->prenom);
 
         // Saisie du nombre de critères
@@ -87,7 +106,6 @@ int main() {
         // Saisie des critères
         for (int j = 0; j < currentInspection->nombreCriteres; j++) {
             CRITERE* currentCritere = &currentInspection->criteres[j];
-
             printf("\nCritere %d:\n", j + 1);
             printf("Nom : ");
             scanf("%s", currentCritere->nom);
@@ -114,7 +132,12 @@ int main() {
                currentInspection->vehicule->immatriculation,
                currentInspection->vehicule->annee,
                currentInspection->vehicule->kilometrage);
-
+        printf("Client: %s %s, Email: %s, Telephone: %s, Ville: %s km\n",
+              currentInspection->vehicule->proprietaire->prenom,
+              currentInspection->vehicule->proprietaire->nom,
+              currentInspection->vehicule->proprietaire->email,
+              currentInspection->vehicule->proprietaire->telephone,
+              currentInspection->vehicule->proprietaire->ville);
         printf("Technicien: %s %s\n",
                currentInspection->technicien->nom,
                currentInspection->technicien->prenom);
